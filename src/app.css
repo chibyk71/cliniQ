@@ -1,0 +1,6 @@
+@import 'tailwindcss';
+/* @import 'autoprefixer'; */
+@import 'konsta/svelte/theme.css';
+
+@plugin '@tailwindcss/forms';
+@plugin '@tailwindcss/typography';

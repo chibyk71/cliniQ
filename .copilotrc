@@ -1,0 +1,51 @@
+# Project Context: HealthPrep AI
+
+This project is an AI-powered exam preparation platform designed for students in nursing, medicine, pharmacy, and other health-related fields. It delivers personalized, adaptive learning through quizzes, mock exams, and AI tutoring, accessible primarily as a Telegram Mini App with a mobile-first design.
+
+## Core Features:
+- **AI-Generated Questions & Explanations**: Use OpenAI to generate multiple-choice questions, OSCE scenarios, and rationales for each topic.
+- **Quiz & Progress Tracking**: Users take quizzes by topic/difficulty; results are stored in a SQLite database. Ongoing quizzes are cached in localStorage so users can resume later.
+- **Mock Exam Mode**: Timed, full-length exams with performance analytics.
+- **Telegram Integration**:
+  - **Mini App**: SvelteKit app loaded in Telegram’s webview.
+  - **Bot**: Handles notifications, reminders, and payment confirmations.
+  - **Payments**: Subscription-based access to premium features.
+- **Framework7 UI**: Used for mobile-first components (Page, Navbar, List, Tabs, Cards, ProgressBar) to create a native-app feel inside Telegram.
+- **Adaptive Learning**: AI focuses on the user’s weak topics over time.
+- **Gamification**: Streaks, badges, and leaderboard features to motivate users.
+
+## Tech Stack:
+- **Frontend/Backend Framework**: SvelteKit (fullstack: UI, routing, API endpoints)
+- **UI Library**: Framework7 (Svelte components for mobile-first UI)
+- **Database**: SQLite (persistent progress, results, subscriptions)
+- **AI Integration**: OpenAI API (for generating questions and explanations)
+- **Bot & Payments**: Telegram Bot API + Payments API
+- **Storage**: LocalStorage (client-side quiz caching), SQLite (server-side persistence)
+
+## Architecture:
+- **SvelteKit Routes**:
+  - `/quiz` – Start or resume quizzes.
+  - `/results` – Show completed quiz results and explanations.
+  - `/progress` – Show analytics on performance over time.
+  - `/api/generate` – Server route to fetch AI-generated questions.
+  - `/api/save` – Save quiz results to SQLite.
+  - `/api/payment` – Handle Telegram payment callbacks.
+- **LocalStorage**: Stores ongoing quiz state to allow session continuity.
+- **SQLite Schema**:
+  - `users`: `id`, `telegram_id`, `name`, `subscription_status`.
+  - `results`: `id`, `user_id`, `topic`, `score`, `created_at`.
+- **Telegram Bot**: Sends reminders, processes payments, and authenticates users in Mini App.
+
+## Goals:
+- Provide a simple, accessible, AI-driven exam preparation tool for health students.
+- Focus on adaptive learning (targeting weak areas).
+- Make it accessible via a platform students already use (Telegram).
+- Build a scalable MVP that can later expand beyond nursing to all healthcare disciplines.
+
+## Copilot Instructions:
+- Prefer generating code that integrates with SvelteKit API routes.
+- When generating UI, use Framework7 Svelte components (Page, Navbar, List, Button, etc.).
+- For database persistence, use SQLite queries or a lightweight ORM (Prisma optional).
+- For Telegram integrations, use Telegram WebApp SDK for auth and node-telegram-bot-api for bot actions.
+- Suggest mobile-first, minimal UI/UX patterns suitable for a study app in a webview.
+- When generating AI prompts, ensure they are concise and domain-specific (nursing, medical, clinical).
