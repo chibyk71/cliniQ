@@ -41,6 +41,7 @@
 		"@oslojs/crypto": "^1.0.1",
 		"@oslojs/encoding": "^1.1.0",
 		"drizzle-orm": "^0.40.0",
-		"konsta": "^5.0.1"
+		"konsta": "^5.0.1",
+		"swiper": "^11.2.10"
 	}
 }
