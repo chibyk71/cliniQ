@@ -4,3 +4,37 @@
 
 @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
+
+.bg-p1{
+  --tw-bg-opacity: 1;
+  background-color: rgba(255, 113, 15, 1);
+  background-color: rgba(255, 113, 15, var(--tw-bg-opacity));
+}
+.bg-p2{
+  --tw-bg-opacity: 1;
+  background-color: rgba(97, 59, 255, 1);
+  background-color: rgba(97, 59, 255, var(--tw-bg-opacity));
+}
+.bg-p3{
+  --tw-bg-opacity: 1;
+  background-color: rgba(94, 186, 103, 1);
+  background-color: rgba(94, 186, 103, var(--tw-bg-opacity));
+}
+
+/* Swiper Styles */
+.swiper-pagination {
+  position: relative !important;
+  bottom: 0 !important;
+}
+
+.onboarding-steps-slider .swiper-pagination .swiper-pagination-bullet {
+  background: #6f7174 !important;
+  width: 4px !important;
+  height: 4px !important;
+}
+.onboarding-steps-slider .swiper-pagination .swiper-pagination-bullet.swiper-pagination-bullet-active {
+  width: 20px !important;
+  height: 4px !important;
+  border-radius: 2px !important;
+  background-color: #613bff !important;
+}
