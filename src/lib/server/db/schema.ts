@@ -5,7 +5,6 @@ export const user = sqliteTable("user", {
 	id: text("id").primaryKey(), // Lucia user ID
 	provider: text("provider").notNull(), // "telegram" | "email"
 	providerUserId: text("provider_user_id").notNull(), // Telegram ID or Email
-	email: text("email"), // only for email users
 	username: text("username"), // Telegram username or app username
 	firstName: text("first_name"),
 	lastName: text("last_name"),
