@@ -1,5 +1,6 @@
 import { sql } from 'drizzle-orm';
 import { sqliteTable, integer, text } from 'drizzle-orm/sqlite-core';
+import z from 'zod';
 
 export const user = sqliteTable("user", {
 	id: text("id").primaryKey(), // Lucia user ID
@@ -10,7 +11,7 @@ export const user = sqliteTable("user", {
 	lastName: text("last_name"),
 	photoUrl: text("photo_url"), // Telegram profile pic or uploaded one
 	passwordHash: text("password_hash"), // only for email users
-	age: integer("age"), // optional, you can keep/remove
+	gender: text("gender"), // optional, you can keep/remove
 	createdAt: integer("created_at", { mode: "timestamp" }).default(sql`CURRENT_TIMESTAMP`),
 });
 

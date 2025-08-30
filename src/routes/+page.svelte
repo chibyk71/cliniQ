@@ -84,18 +84,12 @@
 						<div class="nextButton">
 							<div class="ara-next" bind:this={onboardingStepsSlider}>
 								{#if !onboardingIsEnded}
-									<button
-										class="bg-p2 flex items-center justify-center rounded-full p-3.5 text-2xl text-white"
-									>
+									<Button rounded>
 										<i class="ph ph-arrow-right"></i>
 										<span class="sr-only">Next</span>
-									</button>
+									</Button>
 								{:else}
-									<a
-										href="./sign-up"
-										class="bg-p2 block rounded-full px-6 py-4 text-center text-base font-semibold text-nowrap text-white"
-										>Get Started</a
-									>
+									<Button href="/sign-up" small>Get Started</Button>
 								{/if}
 							</div>
 						</div>
