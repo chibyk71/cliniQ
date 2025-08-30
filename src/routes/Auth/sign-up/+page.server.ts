@@ -1,30 +1,39 @@
-import { fail } from '@sveltejs/kit';
+import { fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
+import { superValidate } from 'sveltekit-superforms';
+import { zod } from 'sveltekit-superforms/adapters';
+import z from 'zod';
+import { hash } from '@node-rs/argon2';
+import { user } from '$lib/server/db/schema';
+import { db } from '$lib/server/db';
+import { createSession, generateSessionToken, setSessionTokenCookie } from '$lib/server/auth';
+
+const User = z.object({
+	providerUserId: z.string().email(),
+	username: z.string(),
+	firstName: z.string(),
+	lastName: z.string(),
+	password: z.string(),
+	gender: z.enum(['male', 'female']).default('male')
+})
 
 export const load = (async () => {
-    return {};
+	const form = await superValidate(zod(User));
+    return { form, title:"Sign Up"};
 }) satisfies PageServerLoad;
 
 export const actions: Actions = {
     default: async (event) => {
-		const formData = await event.request.formData();
-		const username = formData.get('username');
-		const password = formData.get('password');
-		const first_name = formData.get('first_name');
-		const last_name = formData.get('last_name');
+		
+		const form = await superValidate(event.request, zod(User))
 
-		if (!username || !password) {
-			return fail(400, { message: 'Missing username or password' });
+		if (!form.valid) {
+			return fail(400, { message: '', form });
 		}
 
-		if (!validateUsername(username)) {
-			return fail(400, { message: 'Invalid username' });
-		}
-		if (!validatePassword(password)) {
-			return fail(400, { message: 'Invalid password' });
-		}
+		const { username, password, firstName, lastName, gender, providerUserId } = form.data
 
-		const userId = generateUserId();
+		const userId = crypto.randomUUID();
 		const passwordHash = await hash(password, {
 			// recommended minimum parameters
 			memoryCost: 19456,
@@ -34,14 +43,14 @@ export const actions: Actions = {
 		});
 
 		try {
-			await db.insert(table.user).values({ id: userId, provider: 'email', providerUserId: username, passwordHash, firstName: first_name ? String(first_name) : null, lastName: last_name ? String(last_name) : null });
+			await db.insert(user).values({ id: userId, provider: 'email', providerUserId, username, passwordHash, firstName, lastName: lastName ? String(lastName) : null, gender });
 
-			const sessionToken = auth.generateSessionToken();
-			const session = await auth.createSession(sessionToken, userId);
-			auth.setSessionTokenCookie(event, sessionToken, session.expiresAt);
+			const sessionToken = generateSessionToken();
+			const session = await createSession(sessionToken, userId);
+			setSessionTokenCookie(event, sessionToken, session.expiresAt);
 		} catch {
 			return fail(500, { message: 'An error has occurred' });
 		}
-		return redirect(302, '/demo/lucia');
+		return redirect(302, '/home');
     }
 };
