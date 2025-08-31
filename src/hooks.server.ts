@@ -1,6 +1,17 @@
 import type { Handle } from '@sveltejs/kit';
 import * as auth from '$lib/server/auth';
 
+/**
+ * Handle to validate session token from cookies and set it in the local context
+ *
+ * If the session token is valid, the user and session are set in the local context,
+ * and the session token is renewed if it's about to expire. If the session token
+ * is invalid, the session token is cleared from the cookies.
+ *
+ * @param {import('@sveltejs/kit').RequestEvent} event
+ * @param {import('@sveltejs/kit').Resolve} resolve
+ * @returns {Promise<import('@sveltejs/kit').RequestEvent>}
+ */
 const handleAuth: Handle = async ({ event, resolve }) => {
 	const sessionToken = event.cookies.get(auth.sessionCookieName);
 
